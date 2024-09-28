@@ -13,9 +13,9 @@ public class PlayerController : MonoBehaviour
     
     void Update()
     {
+        
         if (remainingTime <= 0)
         {
-
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 remainingTime = jumpTime;
@@ -44,6 +44,10 @@ public class PlayerController : MonoBehaviour
         
         remainingTime -= Time.deltaTime;
         transform.position += direction * Time.deltaTime * (tileSize / jumpTime);
+        if (GameObject.Find("Player").transform.position.y >= 3)
+        {
+            Debug.Log("you won!");
+        }
 
 
     }
