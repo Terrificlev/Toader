@@ -18,10 +18,10 @@ public class CarMovementrighttoleft : MonoBehaviour
     {
         transform.position += new Vector3(speed * Direction, 0, 0) * Time.deltaTime;
         
-        if (GameObject.Find("car").transform.position.x < -11)
+        if (transform.position.x < -11)
         { 
-            transform.position = new Vector3(12,-3.79F,-0.1F);
-        }
+            Destroy(gameObject);
+        }   
         
     }
 }
