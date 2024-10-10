@@ -1,12 +1,17 @@
 using Unity.Mathematics.Geometry;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class CarManager : MonoBehaviour
 {
     //public CarMovementrighttoleft carPrefab;
-    public GameObject carPrefab;
+    public CarMovementrighttoleft carPrefab;
+    
     private Unity.Mathematics.Random _randomGenerator = new Unity.Mathematics.Random();
+    
+    public bool toRight1 = false;
+    private int Direction => toRight1 ? -1 : 1;
     
     private float randomHold = -1;
     public float startX = 11f;
@@ -16,23 +21,42 @@ public class CarManager : MonoBehaviour
 
     public float minWaitTime = 0.25f;
     public float maxWaitTime = 1f;
-    
+
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        startX *= Direction;
         var newX = startX;
         var newCar1 = Instantiate(carPrefab, transform, true);
         newCar1.transform.localPosition = new Vector3(newX, 0, -0.1f);
-        _randomGenerator.InitState();
-        while (newX > -11)
+        newCar1.toRight = toRight1;
+        _randomGenerator.InitState((uint)Random.Range(0, 1000000));
+        if (Direction == 1)
         {
-            var randomDistance = _randomGenerator.NextFloat(minDistance, maxDistance);
-            var newCar2 = Instantiate(carPrefab, transform, true);
-            newCar2.transform.localPosition = new Vector3(newX - randomDistance, 0, -0.1f);
-            newX -= randomDistance;
+            while (newX > -11 * Direction)
+            {
+                var randomDistance = _randomGenerator.NextFloat(minDistance, maxDistance);
+                var newCar2 = Instantiate(carPrefab, transform, true);
+                newCar2.transform.localPosition = new Vector3(newX - randomDistance * Direction, 0, -0.1f);
+                newCar2.toRight = toRight1;
+                newX -= randomDistance * Direction;
+            }
         }
 
-        
+        if (Direction == -1)
+        {
+            while (newX < -11 * Direction)
+            {
+                var randomDistance = _randomGenerator.NextFloat(minDistance, maxDistance);
+                var newCar2 = Instantiate(carPrefab, transform, true);
+                newCar2.transform.localPosition = new Vector3(newX - randomDistance * Direction, 0, -0.1f);
+                newCar2.toRight = toRight1;
+                newX -= randomDistance * Direction;
+            }
+        }
+
     }
     // Update is called once per frame
     void Update()
@@ -47,8 +71,9 @@ public class CarManager : MonoBehaviour
 
         if (randomHold <= 0)
         {
-        var newCar1 = Instantiate(carPrefab, transform, true);
-        newCar1.transform.localPosition = new Vector3(startX, 0, -0.1f);
+            var newCar1 = Instantiate(carPrefab, transform, true);
+            newCar1.transform.localPosition = new Vector3(startX, 0, -0.1f);
+            newCar1.toRight = toRight1;
         }
 
     }
