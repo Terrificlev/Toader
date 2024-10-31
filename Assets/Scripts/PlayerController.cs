@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -52,9 +53,14 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("car"))
         {
-            transform.position = new Vector3(0, -4.7f, -0.1f);
+            transform.position = new Vector3(0, -4.75f, -0.1f);
 
         }
         
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+
     }
 }
