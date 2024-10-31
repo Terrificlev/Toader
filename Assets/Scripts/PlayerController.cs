@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
@@ -9,8 +10,9 @@ public class PlayerController : MonoBehaviour
     public float jumpTime = 2f;
 
     private float remainingTime = 0;
-    private Vector3 direction; 
+    private Vector3 direction;
     
+
     void Update()
     {
         
@@ -41,14 +43,18 @@ public class PlayerController : MonoBehaviour
 
             return;
         }
-        
         remainingTime -= Time.deltaTime;
         transform.position += direction * Time.deltaTime * (tileSize / jumpTime);
-        if (GameObject.Find("Player").transform.position.y >= 3)
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("car"))
         {
-            Debug.Log("you won!");
+            transform.position = new Vector3(0, -4.7f, -0.1f);
+
         }
-
-
+        
     }
 }
