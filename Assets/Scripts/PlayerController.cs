@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,8 +13,12 @@ public class PlayerController : MonoBehaviour
 
     private float remainingTime = 0;
     private Vector3 direction;
-    
 
+    private bool isOnLog = false;
+    private bool isOnWater = false;
+    
+    public float waitTime = 0.3f;
+    public float remainingWaitTime = 0.3f;
     void Update()
     {
         
@@ -49,18 +54,56 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    private void FixedUpdate()
+    {
+        if (isOnWater)
+        {
+            remainingWaitTime -= Time.deltaTime;
+        }
+        if (isOnLog)
+        {
+            remainingWaitTime = remainingTime;
+        }
+        if (isOnLog == false && isOnWater && remainingWaitTime <= 0)
+        {
+            Debug.Log("frog drowned");
+        }
+        
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("car"))
         {
             transform.position = new Vector3(0, -4.75f, -0.1f);
+        }
 
+        if (other.gameObject.CompareTag("log"))
+        {
+            isOnLog = true;
+            Debug.Log("on the log");
+        }
+
+        if (other.gameObject.CompareTag("water"))
+        {
+            isOnWater = true;
+            Debug.Log("on the water");
         }
         
     }
 
-    private void OnTriggerStay2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)
     {
+        if (other.CompareTag("log"))
+        {
+            isOnLog = false;
+            Debug.Log("left the log");
+        }
 
+        if (other.CompareTag("water"))
+        {
+            isOnWater = false;
+            Debug.Log("left the water");
+        }
     }
 }
