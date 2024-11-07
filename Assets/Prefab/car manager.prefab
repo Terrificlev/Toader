@@ -44,9 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c27043e3aefa5a348bcf52694c18d906, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  carPrefab: {fileID: 8901073752966396190, guid: 2add4c9d5f0d4f5438b7b464f301fa63, type: 3}
-  x: 10.55
-  y: -3.95
+  carPrefab: {fileID: 3190957992513770788, guid: 2add4c9d5f0d4f5438b7b464f301fa63, type: 3}
+  toRight1: 0
+  startX: 11
   minDistance: 2
   maxDistance: 3.5
   minWaitTime: 1
