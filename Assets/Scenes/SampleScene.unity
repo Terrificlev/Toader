@@ -1053,12 +1053,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80227502f83ea104ca964131ddf69115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logPrefab: {fileID: 0}
-  toRight1: 0
   tileSize: 0.78333
   jumpTime: 0.2
-  waitTime: 2
-  remainingWaitTime: 2
+  waitTime: 0.5
+  remainingWaitTime: 0.5
   speed: 1.3
 --- !u!212 &1165783087
 SpriteRenderer:
@@ -1124,7 +1122,7 @@ Transform:
   m_GameObject: {fileID: 1165783085}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -0.094, z: -0.1}
+  m_LocalPosition: {x: -0, y: 0, z: -0.1}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []

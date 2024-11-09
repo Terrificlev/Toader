@@ -8,10 +8,9 @@ using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
-    public LogMovement logPrefab;
-    
-    public bool toRight1 = false;
-    private int Direction => toRight1 ? -1 : 1;
+    private Vector3 moveWithLog;
+
+    private int Direction = 0;
     
     public float tileSize = 50f;
     public float jumpTime = 2f;
@@ -22,8 +21,8 @@ public class PlayerController : MonoBehaviour
     private int isOnLog = 0;
     private bool isOnWater = false;
     
-    public float waitTime = 0.1f;
-    public float remainingWaitTime = 0.1f;
+    public float waitTime = 10f;
+    public float remainingWaitTime = 10f;
 
     public float speed = 1.3f;
     void Update()
@@ -50,7 +49,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
                 remainingTime = jumpTime;
-                direction = Vector3.down;
+                direction = Vector3.down ;
             }
 
 
@@ -69,18 +68,24 @@ public class PlayerController : MonoBehaviour
         }
         if (isOnLog >= 1)
         {
-            remainingWaitTime = remainingTime;
+            remainingWaitTime = waitTime;
+            moveWithLog = new Vector3(1.5f * Direction, 0, 0);
+            transform.position = moveWithLog;
         }
         if (isOnLog <= 0 && isOnWater && remainingWaitTime <= 0)
         {
             Debug.Log("frog drowned");
-            transform.position = new Vector3(0, -4.75f, -0.1f);
+            //transform.position = new Vector3(0, 0, -0.1f);
+            isOnWater = false;
+            isOnLog = 0;
         }
         
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        
+        
         if (other.gameObject.CompareTag("car"))
         {
             transform.position = new Vector3(0, -4.75f, -0.1f);
@@ -90,6 +95,14 @@ public class PlayerController : MonoBehaviour
         {
             isOnLog++;
             Debug.Log("on the log");
+            if (other.gameObject.GetComponent<LogMovement>().toRight)
+            {
+                Direction = 1;
+            }
+            else
+            {
+                Direction = -1;
+            }
         }
 
         if (other.gameObject.CompareTag("water"))
@@ -106,6 +119,7 @@ public class PlayerController : MonoBehaviour
         {
             isOnLog--;
             Debug.Log("left the log");
+            Direction = 0;
         }
 
         if (other.CompareTag("water"))
