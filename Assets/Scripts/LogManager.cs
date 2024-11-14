@@ -30,7 +30,7 @@ public class LogManager : MonoBehaviour
         startX *= Direction;
         var newX = startX;
         var newCar1 = Instantiate(logPrefab, transform, true);
-        newCar1.transform.localPosition = new Vector3(newX, 0, -0.1f);
+        newCar1.transform.localPosition = new Vector3(newX, 0, -0.01f);
         newCar1.toRight = toRight1;
         _randomGenerator.InitState((uint)Random.Range(0, 1000000));
         if (Direction == 1)
@@ -39,7 +39,7 @@ public class LogManager : MonoBehaviour
             {
                 var randomDistance = _randomGenerator.NextFloat(minDistance, maxDistance);
                 var newCar2 = Instantiate(logPrefab, transform, true);
-                newCar2.transform.localPosition = new Vector3(newX - randomDistance * Direction, 0, -0.1f);
+                newCar2.transform.localPosition = new Vector3(newX - randomDistance * Direction, 0, -0.01f);
                 newCar2.toRight = toRight1;
                 newX -= randomDistance * Direction;
             }
@@ -51,7 +51,7 @@ public class LogManager : MonoBehaviour
             {
                 var randomDistance = _randomGenerator.NextFloat(minDistance, maxDistance);
                 var newCar2 = Instantiate(logPrefab, transform, true);
-                newCar2.transform.localPosition = new Vector3(newX - randomDistance * Direction, 0, -0.1f);
+                newCar2.transform.localPosition = new Vector3(newX - randomDistance * Direction, 0, -0.01f);
                 newCar2.toRight = toRight1;
                 newX -= randomDistance * Direction;
             }
@@ -72,7 +72,7 @@ public class LogManager : MonoBehaviour
         if (randomHold <= 0)
         {
             var newCar1 = Instantiate(logPrefab, transform, true);
-            newCar1.transform.localPosition = new Vector3(startX, 0, -0.1f);
+            newCar1.transform.localPosition = new Vector3(startX, 0, -0.01f);
             newCar1.toRight = toRight1;
         }
 

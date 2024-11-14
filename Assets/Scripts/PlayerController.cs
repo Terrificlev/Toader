@@ -8,9 +8,11 @@ using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject usedLilypad;
+    
     private Vector3 moveWithLog;
 
-    private int Direction = 0;
+    private bool isOnLilypad;
     
     public float tileSize = 50f;
     public float jumpTime = 2f;
@@ -30,6 +32,7 @@ public class PlayerController : MonoBehaviour
         
         if (remainingTime <= 0)
         {
+            transform.position += moveWithLog * Time.deltaTime * 1.5f;
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 remainingTime = jumpTime;
@@ -69,8 +72,8 @@ public class PlayerController : MonoBehaviour
         if (isOnLog >= 1)
         {
             remainingWaitTime = waitTime;
-            moveWithLog = new Vector3(1.5f * Direction, 0, 0);
-            transform.position = moveWithLog;
+            
+            
         }
         if (isOnLog <= 0 && isOnWater && remainingWaitTime <= 0)
         {
@@ -78,6 +81,7 @@ public class PlayerController : MonoBehaviour
             //transform.position = new Vector3(0, 0, -0.1f);
             isOnWater = false;
             isOnLog = 0;
+            moveWithLog = new Vector3(0, 0, 0);
         }
         
     }
@@ -97,11 +101,11 @@ public class PlayerController : MonoBehaviour
             Debug.Log("on the log");
             if (other.gameObject.GetComponent<LogMovement>().toRight)
             {
-                Direction = 1;
+                moveWithLog = new Vector3(1, 0, 0);
             }
-            else
+            else if(!other.gameObject.GetComponent<LogMovement>().toRight)
             {
-                Direction = -1;
+                moveWithLog = new Vector3(-1, 0, 0);
             }
         }
 
@@ -110,8 +114,19 @@ public class PlayerController : MonoBehaviour
             isOnWater = true;
             Debug.Log("on the water");
         }
+
+        if (other.gameObject.CompareTag("lilypad"))
+        {
+            moveWithLog = new Vector3(0, 0, 0);
+            var position = other.transform.position;
+            transform.position = position;
+            Instantiate(usedLilypad, position, new Quaternion(0,0,0,0)); 
+            Destroy(other.gameObject);
+        }
         
     }
+
+
 
     private void OnTriggerExit2D(Collider2D other)
     {
@@ -119,13 +134,14 @@ public class PlayerController : MonoBehaviour
         {
             isOnLog--;
             Debug.Log("left the log");
-            Direction = 0;
+            
         }
 
         if (other.CompareTag("water"))
         {
             isOnWater = false;
             Debug.Log("left the water");
+            
         }
     }
 }
