@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
+using Vector3 = UnityEngine.Vector3;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 moveWithLog;
 
     private bool isOnLilypad;
+    private bool isAlive = true;
     
     public float tileSize = 50f;
     public float jumpTime = 2f;
@@ -59,6 +61,10 @@ public class PlayerController : MonoBehaviour
             return;
         }
         remainingTime -= Time.deltaTime;
+        if (!isAlive)
+        {
+            //direction = new Vector3(0,0,0);
+        }
         transform.position += direction * Time.deltaTime * (tileSize / jumpTime);
 
     }
@@ -72,14 +78,13 @@ public class PlayerController : MonoBehaviour
         if (isOnLog >= 1)
         {
             remainingWaitTime = waitTime;
-            
-            
         }
         if (isOnLog <= 0 && isOnWater && remainingWaitTime <= 0)
         {
             Debug.Log("frog drowned");
             //transform.position = new Vector3(0, 0, -0.1f);
             isOnWater = false;
+            isAlive = false;
             isOnLog = 0;
             moveWithLog = new Vector3(0, 0, 0);
         }
@@ -93,6 +98,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("car"))
         {
             transform.position = new Vector3(0, -4.75f, -0.1f);
+            isAlive = false;
         }
 
         if (other.gameObject.CompareTag("log"))
@@ -120,8 +126,19 @@ public class PlayerController : MonoBehaviour
             moveWithLog = new Vector3(0, 0, 0);
             var position = other.transform.position;
             transform.position = position;
+            transform.position = new Vector3(0, -4.75f, -0.1f);
             Instantiate(usedLilypad, position, new Quaternion(0,0,0,0)); 
             Destroy(other.gameObject);
+        }
+
+        if (other.gameObject.CompareTag("usedLilypad"))
+        {
+            transform.position = other.transform.position + new Vector3(1, 0, 0);
+        }
+
+        if (other.gameObject.CompareTag("Respawn"))
+        {
+            isAlive = true;
         }
         
     }

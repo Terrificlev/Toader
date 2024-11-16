@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3453582216957473013}
   m_Layer: 0
   m_Name: Used Lilypad
-  m_TagString: Untagged
+  m_TagString: used lilypad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
