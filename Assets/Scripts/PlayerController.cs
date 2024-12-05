@@ -29,8 +29,20 @@ public class PlayerController : MonoBehaviour
     public float remainingWaitTime = 10f;
 
     public float speed = 1.3f;
+
+    public float amoountOfLivesLeft = 5;
     void Update()
     {
+        if (transform.position.x > 10 || transform.position.x < -10 || transform.position.y > 5 ||
+            transform.position.y < -5)
+        {
+            transform.position = new Vector3(0, -4.75f, -0.1f);
+            isOnWater = false;
+            isAlive = false;
+            amoountOfLivesLeft--;
+            isOnLog = 0;
+        }
+        
         
         if (remainingTime <= 0)
         {
@@ -39,22 +51,26 @@ public class PlayerController : MonoBehaviour
             {
                 remainingTime = jumpTime;
                 direction = Vector3.up;
+                isAlive = true;
             }
             
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 remainingTime = jumpTime;
                 direction = Vector3.left;
+                isAlive = true;
             }
             if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
                 remainingTime = jumpTime;
                 direction = Vector3.right;
+                isAlive = true;
             }
             if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
                 remainingTime = jumpTime;
                 direction = Vector3.down ;
+                isAlive = true;
             }
 
 
@@ -63,7 +79,9 @@ public class PlayerController : MonoBehaviour
         remainingTime -= Time.deltaTime;
         if (!isAlive)
         {
-            //direction = new Vector3(0,0,0);
+            
+            direction = new Vector3(0,0,0);
+            remainingTime = -1;
         }
         transform.position += direction * Time.deltaTime * (tileSize / jumpTime);
 
@@ -82,9 +100,11 @@ public class PlayerController : MonoBehaviour
         if (isOnLog <= 0 && isOnWater && remainingWaitTime <= 0)
         {
             Debug.Log("frog drowned");
-            //transform.position = new Vector3(0, 0, -0.1f);
+            transform.position = new Vector3(0, -4.75f, -0.1f);
             isOnWater = false;
             isAlive = false;
+            amoountOfLivesLeft--;
+            remainingWaitTime = waitTime;
             isOnLog = 0;
             moveWithLog = new Vector3(0, 0, 0);
         }
@@ -99,6 +119,7 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = new Vector3(0, -4.75f, -0.1f);
             isAlive = false;
+            amoountOfLivesLeft--;
         }
 
         if (other.gameObject.CompareTag("log"))
@@ -127,6 +148,8 @@ public class PlayerController : MonoBehaviour
             var position = other.transform.position;
             transform.position = position;
             transform.position = new Vector3(0, -4.75f, -0.1f);
+            isAlive = false;
+            amoountOfLivesLeft--;
             Instantiate(usedLilypad, position, new Quaternion(0,0,0,0)); 
             Destroy(other.gameObject);
         }
@@ -140,6 +163,11 @@ public class PlayerController : MonoBehaviour
         {
             isAlive = true;
         }
+
+        if (other.gameObject.CompareTag("alignPad"))
+        {
+            //transform.position = new Vector3(transform.position.x, -transform.position.y, transform.position.z);
+        }
         
     }
 
@@ -149,9 +177,10 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("log"))
         {
-            isOnLog--;
+            isOnLog --;
             Debug.Log("left the log");
-            
+            //moveWithLog = new Vector3(0, 0, 0);
+
         }
 
         if (other.CompareTag("water"))

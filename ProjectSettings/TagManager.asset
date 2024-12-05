@@ -9,6 +9,8 @@ TagManager:
   - log
   - lilypad
   - usedLilypad
+  - used lilypad
+  - alignPad
   layers:
   - Default
   - TransparentFX
