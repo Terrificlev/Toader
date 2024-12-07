@@ -30,7 +30,8 @@ public class PlayerController : MonoBehaviour
 
     public float speed = 1.3f;
 
-    public float amoountOfLivesLeft = 5;
+    public int amoountOfLivesLeft = 5;
+    public int amountOflilypadsPopulated = 0;
     void Update()
     {
         if (transform.position.x > 10 || transform.position.x < -10 || transform.position.y > 5 ||
@@ -152,6 +153,7 @@ public class PlayerController : MonoBehaviour
             amoountOfLivesLeft--;
             Instantiate(usedLilypad, position, new Quaternion(0,0,0,0)); 
             Destroy(other.gameObject);
+            amountOflilypadsPopulated++;
         }
 
         if (other.gameObject.CompareTag("usedLilypad"))
